@@ -24,22 +24,41 @@ namespace ControleContatos.Controllers
             return View();
         }
 
-        public IActionResult Editar()
+        public IActionResult Editar(int id)
         {
-            return View();
+            var contato = _repository.BuscarPorId(id);
+            return View(contato);
         }
 
-        public IActionResult ApagarConfirmacao()
+        public IActionResult ApagarConfirmacao(int id)
         {
-            return View();
+            var contato = _repository.BuscarPorId(id);
+            return View(contato);
         }
 
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Criar(Contato contato)
         {
             _repository.Adicionar(contato);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Editar(Contato contato)
+        {
+            _repository.Editar(contato);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Excluir(int id)
+        {
+            var confirma = _repository.Apagar(id);
+            if (confirma != true) throw new Exception("Houve um erro ao excluir!");
+            return RedirectToAction("Index");
+        }
+
     }
 }
