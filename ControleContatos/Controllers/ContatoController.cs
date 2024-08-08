@@ -41,23 +41,67 @@ namespace ControleContatos.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Criar(Contato contato)
         {
-            _repository.Adicionar(contato);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _repository.Adicionar(contato);
+                    TempData["MensagemSucesso"] = "Contato cadastrado com sucesso!";
+                    return RedirectToAction("Index");
+                }
+
+                return View(contato);
+            }
+            catch(Exception ex)
+            {
+                TempData["MensagemErro"] = $"Ops, não foi possivel cadastrar contato, tente novamente! Detalhe do erro: {ex.Message}";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public IActionResult Editar(Contato contato)
         {
-            _repository.Editar(contato);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _repository.Editar(contato);
+                    TempData["MensagemSucesso"] = "Contato editado com sucesso!";
+                    return RedirectToAction("Index");
+                }
+
+                return View(contato);
+            }catch(Exception ex)
+            {
+                TempData["MensagemErro"] = $"Ops, não foi possivel editar contato, tente novamente! Detalhe do erro: {ex.Message}";
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Excluir(int id)
         {
-            var confirma = _repository.Apagar(id);
-            if (confirma != true) throw new Exception("Houve um erro ao excluir!");
-            return RedirectToAction("Index");
+            try
+            {
+                var confirma = _repository.Apagar(id);
+                if (confirma == true)
+                {
+                    TempData["MensagemSucesso"] = "Contato excluido com sucesso!";
+                }
+                else
+                {
+                    TempData["MensagemErro"] = $"Ops, não foi possivel deletar contato, tente novamente!";
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = $"Ops, não foi possivel excluir contato, tente novamente! Detalhe do erro: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+
+
         }
 
     }

@@ -1,4 +1,9 @@
-﻿$(document).ready(function () {
+﻿$('.close-alert').click(function () {
+    $('.alert').hide('hide');
+})
+
+
+$(document).ready(function () {
     $('#TabelaContatos').DataTable(
         {
             responsive: true,
