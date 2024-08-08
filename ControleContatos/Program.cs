@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IContatoRepository, ContatoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 

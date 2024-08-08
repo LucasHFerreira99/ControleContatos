@@ -1,11 +1,20 @@
 ﻿$('.close-alert').click(function () {
-    $('.alert').hide('hide');
-})
-
+    $('.alert').hide(400);
+});
 
 $(document).ready(function () {
-    $('#TabelaContatos').DataTable(
+    GetDataTable("#TabelaContatos");
+    GetDataTable("#TabelaUsuarios");
+});
+
+
+function GetDataTable(id){
+    $(id).DataTable(
         {
+            columnDefs: [{
+                "defaultContent": "-",
+                "targets": "_all"
+            }],
             responsive: true,
             layout: {
                 topEnd: 'buttons'
@@ -41,6 +50,18 @@ $(document).ready(function () {
                 }
             }
         });
-});
+}
 
+
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.querySelector('.toggle-password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = '🙈'; // Muda o ícone quando a senha está visível
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = '👁️'; // Muda o ícone quando a senha está oculta
+    }
+}
 
