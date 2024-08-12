@@ -1,10 +1,12 @@
 ﻿using ControleContatos.Data;
+using ControleContatos.Filters;
 using ControleContatos.Models;
 using ControleContatos.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleContatos.Controllers
 {
+    [PaginaRestritaAdmin]
     public class UsuarioController : Controller
     {
 
