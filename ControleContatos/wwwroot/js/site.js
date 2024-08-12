@@ -12,13 +12,10 @@ function GetDataTable(id){
     $(id).DataTable(
         {
             columnDefs: [{
-                "defaultContent": "-",
+                "defaultContent": "",
                 "targets": "_all"
             }],
             responsive: true,
-            layout: {
-                topEnd: 'buttons'
-            },
             buttons: {
                 name: 'primary',
                 buttons: ['copy', 'csv', 'excel']

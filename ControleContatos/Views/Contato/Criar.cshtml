@@ -24,6 +24,7 @@
         <input type="text" asp-for="Celular" class="form-control" placeholder="Digite o celular do contato">
         @Html.ValidationMessageFor(c => c.Celular)
     </div>
+    <br />
     <button type="submit" class="btn btn-primary w-100 mb-2" asp-controller="Contato" asp-action="Criar">Adicionar</button>
     <a class="btn btn-secondary w-100" asp-controller="Contato" asp-action="Index" role="button">Voltar</a>
 </form>

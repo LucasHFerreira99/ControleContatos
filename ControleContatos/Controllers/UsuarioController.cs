@@ -63,13 +63,22 @@ namespace ControleContatos.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Editar(Usuario usuario)
+        public IActionResult Editar(UsuarioSemSenha usuarioSemSenha)
         {
             try
             {
+                Usuario usuario = null;
                 if (ModelState.IsValid)
                 {
-                    _repository.Editar(usuario);
+                    usuario = new Usuario()
+                    {
+                        UsuarioId = usuarioSemSenha.UsuarioId,
+                        Nome = usuarioSemSenha.Nome,
+                        Login = usuarioSemSenha.Login,
+                        Email = usuarioSemSenha.Email,
+                        Perfil = usuarioSemSenha.Perfil,
+                    };
+                    usuario = _repository.Editar(usuario);
                     TempData["MensagemSucesso"] = "Usuário editado com sucesso!";
                     return RedirectToAction("Index");
                 }

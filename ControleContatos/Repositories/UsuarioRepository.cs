@@ -13,6 +13,12 @@ namespace ControleContatos.Repositories
             _context = context;
         }
 
+
+        public Usuario BuscarPorLogin(string login)
+        {
+            return _context.Usuarios.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
+        }
+
         public List<Usuario> BuscarTodos()
         {
             return _context.Usuarios.ToList();
@@ -35,7 +41,7 @@ namespace ControleContatos.Repositories
         {
             var usuarioDb = BuscarPorId(usuario.UsuarioId);
 
-            if (usuarioDb == null) throw new System.Exception("Houve um erro ao atualizar o usuário!");
+            if (usuarioDb == null) throw new System.Exception("Houve um erro ao atualizar o usuário! Usuário não encontrado!");
 
             usuarioDb.Nome = usuario.Nome;
             usuarioDb.Email = usuario.Email;
@@ -51,13 +57,15 @@ namespace ControleContatos.Repositories
 
         public bool Apagar(int id)
         {
-            var usuario = _context.Contatos.FirstOrDefault(usuario => usuario.ContatoId == id);
+            var usuario = _context.Usuarios.FirstOrDefault(usuario => usuario.UsuarioId == id);
 
             if (usuario is null) throw new System.Exception("Houve um erro ao encontrar o usuário para exclusão!");
 
-            _context.Contatos.Remove(usuario);
+            _context.Usuarios.Remove(usuario);
             _context.SaveChanges();
             return true;
         }
+
+
     }
 }
