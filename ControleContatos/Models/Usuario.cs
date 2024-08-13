@@ -26,6 +26,7 @@ namespace ControleContatos.Models
         public DateTime DataCadastro { get; set; }
         public DateTime? DataAtualizacao { get; set; }
 
+        public virtual List<Contato> Contatos { get; set; }
 
         public bool SenhaValida(string senha)
         {

@@ -13,9 +13,9 @@ namespace ControleContatos.Repositories
         {
             _context = context;
         }
-        public List<Contato> buscarTodos()
+        public List<Contato> buscarTodos(int usuarioId)
         {
-            return _context.Contatos.ToList();
+            return _context.Contatos.Where(x=> x.UsuarioId == usuarioId).ToList();
         }
 
         public Contato BuscarPorId(int id)

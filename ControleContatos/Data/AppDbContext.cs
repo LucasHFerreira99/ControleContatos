@@ -1,4 +1,5 @@
-﻿using ControleContatos.Models;
+﻿using ControleContatos.Data.Map;
+using ControleContatos.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControleContatos.Data
@@ -11,5 +12,11 @@ namespace ControleContatos.Data
 
         public DbSet<Contato> Contatos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ContatoMap());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

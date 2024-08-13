@@ -19,7 +19,8 @@ namespace ControleContatos.Controllers
 
         public IActionResult Index()
         {
-            var contatos = _repository.buscarTodos();
+            var usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+            var contatos = _repository.buscarTodos(usuarioLogado.UsuarioId);
             return View(contatos);
         }
 
@@ -47,8 +48,11 @@ namespace ControleContatos.Controllers
         {
             try
             {
+                var usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+                contato.UsuarioId = usuarioLogado.UsuarioId;
                 if (ModelState.IsValid)
                 {
+                    
                     _repository.Adicionar(contato);
                     TempData["MensagemSucesso"] = "Contato cadastrado com sucesso!";
                     return RedirectToAction("Index");
@@ -71,6 +75,8 @@ namespace ControleContatos.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+                    contato.UsuarioId = usuarioLogado.UsuarioId;
                     _repository.Editar(contato);
                     TempData["MensagemSucesso"] = "Contato editado com sucesso!";
                     return RedirectToAction("Index");
