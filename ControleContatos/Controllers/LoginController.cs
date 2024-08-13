@@ -10,10 +10,13 @@ namespace ControleContatos.Controllers
 
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ISessao _sessao;
-        public LoginController(IUsuarioRepository usuarioRepository, ISessao sessao)
+        private readonly IEmail _email;
+
+        public LoginController(IUsuarioRepository usuarioRepository, ISessao sessao, IEmail email)
         {
             _usuarioRepository = usuarioRepository;
             _sessao = sessao;
+            _email = email;
         }
 
         public IActionResult Index()
@@ -71,11 +74,23 @@ namespace ControleContatos.Controllers
                 if (ModelState.IsValid)
                 {
                     var usuario = _usuarioRepository.BuscarPorEmailELogin(redefinirSenhaModel.Email, redefinirSenhaModel.Login);
-
+                 
                     if(usuario != null)
                     {
                         string novaSenha = usuario.GerarNovaSenha();
-                        TempData["MensagemSucesso"] = $"Enviamos para o seu e-mail cadastrado uma nova senha.";
+                        string mensagem = $"Sua nova senha é: {novaSenha}";
+
+                        bool emailEnviado = _email.Enviar(usuario.Email, "Sistem de contatos - Nova senha", mensagem);
+                        
+                        if(emailEnviado)
+                        {
+                            _usuarioRepository.Editar(usuario);
+                            TempData["MensagemSucesso"] = $"Enviamos para o seu e-mail cadastrado uma nova senha.";
+                        }
+                        else
+                        {
+                            TempData["MensagemErro"] = $"Não conseguimos enviar o e-mail. Por favor, tente novamente!";
+                        }
                         return RedirectToAction("Index", "Login");
                     }
                     TempData["MensagemErro"] = $"Não conseguimos redefinir a sua senha. Por favor, verifique os dados informados!";
@@ -85,7 +100,7 @@ namespace ControleContatos.Controllers
             catch (Exception ex)
             {
                 TempData["MensagemErro"] = $"Ops, não conseguimos redefinir a sua senha, tente novamente. Detalhes do erro: {ex.Message}";
-                return RedirectToAction("RedefinirSenha");
+                return RedirectToAction("Index");
             }
         }
         public IActionResult Sair()
@@ -93,7 +108,5 @@ namespace ControleContatos.Controllers
             _sessao.RemoverSessaoDoUsuario();
             return RedirectToAction("Index", "Login");
         }
-
-
     }
 }
