@@ -6,6 +6,7 @@ namespace ControleContatos.Repositories
     {
 
         Usuario BuscarPorLogin(string login);
+        Usuario BuscarPorEmailELogin(string email, string login);
         List<Usuario> BuscarTodos();
         Usuario BuscarPorId(int id);
         Usuario Adicionar(Usuario usuario);

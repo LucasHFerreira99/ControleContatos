@@ -1,4 +1,5 @@
 ﻿using ControleContatos.Filters;
+using ControleContatos.Helper;
 using ControleContatos.Models;
 using ControleContatos.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,11 @@ namespace ControleContatos.Controllers
     public class ContatoController : Controller
     {
         private readonly IContatoRepository _repository;
-
-        public ContatoController(IContatoRepository repository)
+        private readonly ISessao _sessao;
+        public ContatoController(IContatoRepository repository, ISessao sessao)
         {
             _repository = repository;
+            _sessao = sessao;
         }
 
         public IActionResult Index()
@@ -86,6 +88,10 @@ namespace ControleContatos.Controllers
         {
             try
             {
+                if (_sessao.BuscarSessaoDoUsuario() == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
                 var confirma = _repository.Apagar(id);
                 if (confirma == true)
                 {
