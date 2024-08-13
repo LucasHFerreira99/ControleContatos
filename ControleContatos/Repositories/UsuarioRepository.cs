@@ -45,7 +45,6 @@ namespace ControleContatos.Repositories
         public Usuario Editar(Usuario usuario)
         {
             var usuarioDb = BuscarPorId(usuario.UsuarioId);
-
             if (usuarioDb == null) throw new System.Exception("Houve um erro ao atualizar o usuário! Usuário não encontrado!");
 
             usuarioDb.Nome = usuario.Nome;
@@ -59,6 +58,24 @@ namespace ControleContatos.Repositories
             _context.SaveChanges();
             return usuarioDb;
         }
+        public Usuario AlterarSenha(AlterarSenhaModel alterarSenhaModel)
+        {
+            Usuario usuarioDb = BuscarPorId(alterarSenhaModel.Id);
+
+            if (usuarioDb == null) throw new Exception("Houve um erro na atualização da senha, usuário não encontrado!");
+        
+            if(!usuarioDb.SenhaValida(alterarSenhaModel.SenhaAtual)) throw new Exception("Senha atual não confere!");
+
+            if (usuarioDb.SenhaValida(alterarSenhaModel.NovaSenha)) throw new Exception("Nova senha deve ser diferente da senha atual!!");
+        
+            usuarioDb.SetNovaSenha(alterarSenhaModel.NovaSenha);
+            usuarioDb.DataAtualizacao = DateTime.Now;
+
+            _context.Usuarios.Update(usuarioDb);
+            _context.SaveChanges();
+
+            return usuarioDb;
+        }   
 
         public bool Apagar(int id)
         {

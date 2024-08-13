@@ -11,6 +11,8 @@ namespace ControleContatos.Repositories
         Usuario BuscarPorId(int id);
         Usuario Adicionar(Usuario usuario);
         Usuario Editar(Usuario usuario);
+
+        Usuario AlterarSenha(AlterarSenhaModel alterarSenhaModel);
         bool Apagar(int id);
     }
 }
