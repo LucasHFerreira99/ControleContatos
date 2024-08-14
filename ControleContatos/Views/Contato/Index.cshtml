@@ -29,7 +29,7 @@
 
     <br />
     <h1 class="display-4">Listagem de Contatos</h1>
-    <table class="table" id="TabelaContatos">
+    <table class="display" width="100%" id="TabelaContatos">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -58,8 +58,10 @@
                     </tr>
                 }
             }
-            
-
+            else
+            {
+                <tr class="odd" ><td valign="top" colspan="5">Nenhum contato encontrado</td></tr>
+            }
         </tbody>
     </table>
 </div>

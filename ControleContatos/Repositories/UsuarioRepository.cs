@@ -1,5 +1,6 @@
 ﻿using ControleContatos.Data;
 using ControleContatos.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleContatos.Repositories
 {
@@ -25,7 +26,9 @@ namespace ControleContatos.Repositories
 
         public List<Usuario> BuscarTodos()
         {
-            return _context.Usuarios.ToList();
+            return _context.Usuarios
+                .Include(x => x.Contatos)
+                .ToList();
         }
 
         public Usuario BuscarPorId(int id)

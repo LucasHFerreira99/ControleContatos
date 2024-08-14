@@ -13,10 +13,12 @@ namespace ControleContatos.Controllers
 
         private readonly IUsuarioRepository _repository;
         private readonly ISessao _sessao;
-        public UsuarioController(IUsuarioRepository repository, ISessao sessao = null)
+        private readonly IContatoRepository _contatoRepository;
+        public UsuarioController(IUsuarioRepository repository, ISessao sessao = null, IContatoRepository contatoRepository = null)
         {
             _repository = repository;
             _sessao = sessao;
+            _contatoRepository = contatoRepository;
         }
 
         public IActionResult Index()
@@ -42,6 +44,11 @@ namespace ControleContatos.Controllers
             return View(usuario);
         }
 
+        public IActionResult ListarContatosPorUsuarioId(int id)
+        {
+            List<Contato> contatos = _contatoRepository.buscarTodos(id);
+            return PartialView("_ContatosUsuario", contatos);
+        }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
